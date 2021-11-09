@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
 
-morgan.token('request', (req, res) => {
+morgan.token('request', (req) => {
   return JSON.stringify(req.body)
 })
 
@@ -35,7 +35,7 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
   Person.find({}).then(persons => {
     const personsCount = persons.length
-    const date = new Date();
+    const date = new Date()
     response.send(`
       <div>Phonebook has info for ${personsCount} people</div>
       <br/>
@@ -56,7 +56,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(person => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -69,7 +69,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number
   }
 
-  const opts = { runValidators: true };
+  const opts = { runValidators: true }
   Person.findByIdAndUpdate(request.params.id, person, { new: true, ...opts})
     .then(newPerson => {
       response.json(newPerson)
