@@ -87,6 +87,34 @@ test('400 error when trying to create blog without title', async () => {
     })
 })
 
+test.only('200 when updating a note by id', async () => {
+  const blogId = '5a422bc61b54a676234d17fc'
+  const updatedBlog = {
+    title: 'updating this blog',
+    author: 'Austin T',
+    url: 'someurl.html',
+    likes: 58
+  }
+
+  await blogsApi
+    .put(`/api/blogs/${blogId}`, )
+    .send(updatedBlog)
+    .expect(200, {
+      title: 'updating this blog',
+      author: 'Austin T',
+      url: 'someurl.html',
+      likes: 58,
+      id: '5a422bc61b54a676234d17fc'
+    })
+})
+
+test('204 when deleting a note by id', async () => {
+  const blogId = '5a422bc61b54a676234d17fc'
+
+  await blogsApi
+    .delete(`/api/blogs/${blogId}`)
+    .expect(204)
+})
 
 
 afterAll(() => {
